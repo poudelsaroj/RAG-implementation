@@ -2,6 +2,12 @@
 
 A complete Retrieval-Augmented Generation (RAG) system with intelligent CV-based interview booking capabilities.
 
+## Live Demo
+
+**Production API**: [https://interview-booking-rag-production.up.railway.app/docs](https://interview-booking-rag-production.up.railway.app/docs)
+
+Try the live API with interactive documentation and test the CV-enhanced booking features.
+
 ## Features
 
 ### Core RAG Functionality
@@ -11,12 +17,15 @@ A complete Retrieval-Augmented Generation (RAG) system with intelligent CV-based
 - **Conversational AI**: Multi-turn chat with context memory using Redis
 - **Custom RAG Pipeline**: No external chains, built from scratch
 
-### CV-Enhanced Interview Booking 
-- **Automatic CV Parsing**: AI-powered extraction of candidate information from uploaded documents
-- **Smart Booking**: Automatically fill missing interview details from CV data
-- **Multiple Interfaces**: Both REST API and chat-based booking with CV enhancement
-- **Natural Language Processing**: "Book me an interview for him" - extracts name/email from CV
-- **Data Persistence**: SQLite database for interview storage
+### CV-Enhanced Interview Booking
+- **Smart CV Parsing**: Upload any CV/resume and AI extracts candidate information automatically
+- **Multiple Booking Methods**: 
+  - **Natural Language**: "Book me an interview for him on March 15th at 2 PM"
+  - **REST API**: `{"date": "2024-03-15", "time": "14:00"}` with auto-fill from CV
+  - **Document-Based**: Direct extraction from uploaded documents
+- **Intelligent Auto-Fill**: Missing booking details completed using uploaded CV data
+- **Multi-Interface Support**: Chat, API, and document processing with CV enhancement
+- **Persistent Storage**: All interviews saved with complete candidate information
 
 ## Quick Start
 
@@ -112,38 +121,47 @@ python test_system.py
 - **Gemini API** - LLM and embeddings
 - **PyPDF2** - PDF processing
 
-## CV-Enhanced Interview Booking Flow
+## How CV-Enhanced Booking Works
 
-### Complete Workflow Example
+### Step-by-Step Process
 
-1. **Upload CV Document**
-   ```bash
-   curl -X POST "http://localhost:8000/upload" \
-     -F "file=@candidate_resume.pdf" \
-     -F "chunking_strategy=fixed_size"
+1. **Upload Candidate's CV/Resume**
+   - Support for PDF and TXT formats
+   - AI processes and extracts candidate information
+   - Document stored for future reference
+
+2. **Book Interview Using Multiple Methods**
+
+   **Method 1: Natural Language Chat**
    ```
-
-2. **Book Interview with Minimal Data**
-   ```bash
-   # Via API (system auto-fills name/email from CV)
-   curl -X POST "http://localhost:8000/book-interview" \
-     -H "Content-Type: application/json" \
-     -d '{"date": "2024-04-15", "time": "14:00"}'
-
-   # Via Chat
-   curl -X POST "http://localhost:8000/chat" \
-     -H "Content-Type: application/json" \
-     -d '{"message": "Book me an interview for him on April 15th at 2 PM"}'
+   "Book me an interview for him on April 15th at 2 PM"
    ```
+   System automatically finds candidate name and email from uploaded CV
 
-3. **Result**: System extracts candidate name and email from uploaded CV and creates complete booking
+   **Method 2: Partial API Booking**
+   ```json
+   {"date": "2024-04-15", "time": "14:00"}
+   ```
+   Missing name/email auto-filled from CV data
 
-## Interview Booking Methods
+   **Method 3: Complete API Booking**
+   ```json
+   {"name": "John Doe", "email": "john@example.com", "date": "2024-04-15", "time": "14:00"}
+   ```
+   Traditional booking with all details provided
 
-1. **CV-Enhanced Chat**: "Book me an interview for him" - AI extracts info from uploaded CV
-2. **CV-Enhanced API**: Partial booking data auto-completed with CV information  
-3. **Traditional API**: Complete booking with all required fields
-4. **Document Extraction**: Automatic interview scheduling from document content
+3. **Automatic Interview Creation**
+   - Complete booking record with all candidate details
+   - Stored in database with timestamp and source tracking
+   - Available via `/interviews` endpoint
+
+### Smart Booking Features
+
+- **AI-Powered**: Understands natural language booking requests
+- **Auto-Complete**: Fills missing information from uploaded CVs
+- **Multiple Sources**: Chat, API, or document-based booking
+- **Persistent**: All bookings saved with full candidate information
+- **Searchable**: Query candidate qualifications from uploaded documents
 
 ## System Architecture
 
@@ -154,46 +172,39 @@ CV Upload → AI Processing → Smart Booking
 endpoint   Extraction    Interview DB
 ```
 
-## Deployment to Render.com
+## Production Deployment
 
-### Quick Deploy
+### Live System on Railway
+This project is deployed on Railway and accessible at:
+**[https://interview-booking-rag-production.up.railway.app/docs](https://interview-booking-rag-production.up.railway.app/docs)**
 
+### Railway Deployment Steps
 1. **Push to GitHub**
    ```bash
    git add .
-   git commit -m "Deploy to Render"
+   git commit -m "Deploy to Railway"
    git push origin main
    ```
 
-2. **Create Render Service**
-   - Go to [Render.com](https://render.com)
+2. **Create Railway Service**
+   - Go to [Railway.app](https://railway.app)
    - Connect your GitHub repository
-   - Render will automatically detect `render.yaml`
+   - Railway automatically detects Python project
 
 3. **Set Environment Variables**
    ```
    GEMINI_API_KEY=your_gemini_api_key_here
    ```
-   Other variables are optional and have fallback defaults.
 
 4. **Deploy**
-   - Render will automatically build and deploy
-   - Your API will be available at: `https://your-service-name.onrender.com`
+   - Railway automatically builds and deploys
+   - Your API will be live with CV-enhanced booking features
 
-### Environment Variables for Production
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `GEMINI_API_KEY` | ✅ | Google Gemini API key |
-| `QDRANT_API_KEY` | ❌ | Qdrant cloud key (optional) |
-| `QDRANT_URL` | ❌ | Qdrant cloud URL (optional) |
-| `REDIS_URL` | ❌ | Redis connection (optional) |
-| `DATABASE_URL` | ❌ | Database URL (optional) |
 
 ### Production Notes
 
 - System uses fallbacks for external services (Qdrant → Memory, Redis → Memory)
-- SQLite database persists on Render's disk storage
+- SQLite database persists on Railway's disk storage
 - For high-traffic, consider upgrading to PostgreSQL database
 
 ## Troubleshooting
@@ -206,5 +217,27 @@ endpoint   Extraction    Interview DB
 ## API Documentation
 
 Interactive API documentation available at:
-- Local: `http://localhost:8000/docs`
-- Production: `https://your-service-name.onrender.com/docs`
+- **Production**: [https://interview-booking-rag-production.up.railway.app/docs](https://interview-booking-rag-production.up.railway.app/docs)
+- **Local**: `http://localhost:8000/docs`
+
+### Live API Base URL
+```
+https://interview-booking-rag-production.up.railway.app
+```
+
+### Example Production Usage
+```bash
+# Upload CV to production
+curl -X POST "https://interview-booking-rag-production.up.railway.app/upload" \
+  -F "file=@resume.pdf" -F "chunking_strategy=fixed_size"
+
+# Book interview with CV enhancement
+curl -X POST "https://interview-booking-rag-production.up.railway.app/book-interview" \
+  -H "Content-Type: application/json" \
+  -d '{"date": "2024-04-20", "time": "14:00"}'
+
+# Chat with CV-enhanced booking
+curl -X POST "https://interview-booking-rag-production.up.railway.app/chat" \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Book me an interview for him on April 25th at 2 PM"}'
+```
