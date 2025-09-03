@@ -154,6 +154,48 @@ CV Upload → AI Processing → Smart Booking
 endpoint   Extraction    Interview DB
 ```
 
+## Deployment to Render.com
+
+### Quick Deploy
+
+1. **Push to GitHub**
+   ```bash
+   git add .
+   git commit -m "Deploy to Render"
+   git push origin main
+   ```
+
+2. **Create Render Service**
+   - Go to [Render.com](https://render.com)
+   - Connect your GitHub repository
+   - Render will automatically detect `render.yaml`
+
+3. **Set Environment Variables**
+   ```
+   GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+   Other variables are optional and have fallback defaults.
+
+4. **Deploy**
+   - Render will automatically build and deploy
+   - Your API will be available at: `https://your-service-name.onrender.com`
+
+### Environment Variables for Production
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GEMINI_API_KEY` | ✅ | Google Gemini API key |
+| `QDRANT_API_KEY` | ❌ | Qdrant cloud key (optional) |
+| `QDRANT_URL` | ❌ | Qdrant cloud URL (optional) |
+| `REDIS_URL` | ❌ | Redis connection (optional) |
+| `DATABASE_URL` | ❌ | Database URL (optional) |
+
+### Production Notes
+
+- System uses fallbacks for external services (Qdrant → Memory, Redis → Memory)
+- SQLite database persists on Render's disk storage
+- For high-traffic, consider upgrading to PostgreSQL database
+
 ## Troubleshooting
 
 - **CV Enhancement Not Working**: Ensure CV document was recently uploaded and contains readable text
@@ -161,4 +203,8 @@ endpoint   Extraction    Interview DB
 - **Qdrant Timeout**: System automatically falls back to in-memory vector storage
 - **Redis Connection**: System falls back to in-memory chat storage
 
-Interactive API documentation: `http://localhost:8000/docs`
+## API Documentation
+
+Interactive API documentation available at:
+- Local: `http://localhost:8000/docs`
+- Production: `https://your-service-name.onrender.com/docs`
