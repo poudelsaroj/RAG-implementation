@@ -1,0 +1,31 @@
+David Rodriguez
+Senior Full Stack Developer
+
+Contact Information:
+Email: david.rodriguez@techstart.com
+Phone: +1-555-987-1234
+Address: 789 Innovation Drive, Austin, TX
+
+Professional Summary:
+Experienced full stack developer with 8+ years in web development,
+specializing in React, Node.js, and cloud technologies.
+
+Work Experience:
+- Senior Full Stack Developer at TechStart Inc (2021-Present)
+- Full Stack Developer at WebSolutions Corp (2018-2021) 
+- Frontend Developer at DigitalCraft (2016-2018)
+
+Technical Skills:
+- Frontend: React, Vue.js, JavaScript, TypeScript, HTML5, CSS3
+- Backend: Node.js, Python, Express.js, Django, FastAPI
+- Databases: PostgreSQL, MongoDB, Redis, MySQL
+- Cloud: AWS, Azure, Docker, Kubernetes
+- Tools: Git, Jenkins, Webpack, Jest
+
+Education:
+Bachelor of Computer Science
+University of Texas at Austin (2012-2016)
+
+Certifications:
+- AWS Certified Solutions Architect
+- Google Cloud Professional Developer

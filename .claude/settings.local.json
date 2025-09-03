@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(pip install:*)",
+      "Bash(timeout:*)",
+      "Bash(curl:*)",
+      "Bash(/bashes)",
+      "Bash(sqlite3:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(redis-cli:*)",
+      "Bash(docker exec:*)",
+      "Bash(del sample_cv.txt test_cv_booking.py test_complete_cv_booking.py start_server_test.py)",
+      "Bash(taskkill:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

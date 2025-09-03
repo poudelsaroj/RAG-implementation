@@ -1,0 +1,11 @@
+Sarah Wilson
+Data Scientist
+
+Email: sarah.wilson@datatech.com
+Phone: +1-555-234-5678
+
+Experience:
+- Senior Data Scientist at DataTech Corp (2020-present)
+- Machine Learning Engineer at AI Solutions (2018-2020)
+
+Skills: Python, SQL, Machine Learning, Deep Learning

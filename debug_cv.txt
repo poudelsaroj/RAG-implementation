@@ -1,0 +1,4 @@
+John Smith
+Software Engineer
+Email: john.smith@example.com
+Phone: +1-555-123-4567
