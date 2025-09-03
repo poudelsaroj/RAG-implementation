@@ -1,15 +1,22 @@
-# RAG System with Interview Booking
+# RAG Implementation with CV-Enhanced Interview Booking
 
-A production RAG (Retrieval-Augmented Generation) backend with document processing and conversational interview booking capabilities.
+A complete Retrieval-Augmented Generation (RAG) system with intelligent CV-based interview booking capabilities.
 
 ## Features
 
-- **Document Processing**: Upload PDF/TXT files with configurable chunking strategies
-- **RAG Implementation**: Custom retrieval-augmented generation with Gemini LLM
-- **Vector Search**: Qdrant integration with in-memory fallback
-- **Conversational Memory**: Redis-based chat history with session management
-- **Interview Booking**: Multiple booking methods (chat, API, document extraction)
-- **SQL Storage**: SQLAlchemy with SQLite for metadata persistence
+### Core RAG Functionality
+- **Document Upload & Processing**: Support for PDF and TXT files with dual chunking strategies
+- **Vector Database Integration**: Qdrant with fallback to in-memory storage
+- **Embedding Generation**: Google Gemini API for text embeddings
+- **Conversational AI**: Multi-turn chat with context memory using Redis
+- **Custom RAG Pipeline**: No external chains, built from scratch
+
+### CV-Enhanced Interview Booking 
+- **Automatic CV Parsing**: AI-powered extraction of candidate information from uploaded documents
+- **Smart Booking**: Automatically fill missing interview details from CV data
+- **Multiple Interfaces**: Both REST API and chat-based booking with CV enhancement
+- **Natural Language Processing**: "Book me an interview for him" - extracts name/email from CV
+- **Data Persistence**: SQLite database for interview storage
 
 ## Quick Start
 
@@ -52,17 +59,25 @@ Content-Type: application/json
 }
 ```
 
-### Interview Booking
+### Interview Booking (CV-Enhanced)
 ```bash
 POST /book-interview
 Content-Type: application/json
 
+# Complete booking
 {
   "name": "Full Name",
   "email": "email@example.com", 
   "date": "2024-01-15",
   "time": "14:30"
 }
+
+# Partial booking (CV auto-fill)
+{
+  "date": "2024-01-15",
+  "time": "14:30"
+}
+# System automatically extracts name/email from uploaded CV
 ```
 
 ### Get Interviews
@@ -97,10 +112,53 @@ python test_system.py
 - **Gemini API** - LLM and embeddings
 - **PyPDF2** - PDF processing
 
+## CV-Enhanced Interview Booking Flow
+
+### Complete Workflow Example
+
+1. **Upload CV Document**
+   ```bash
+   curl -X POST "http://localhost:8000/upload" \
+     -F "file=@candidate_resume.pdf" \
+     -F "chunking_strategy=fixed_size"
+   ```
+
+2. **Book Interview with Minimal Data**
+   ```bash
+   # Via API (system auto-fills name/email from CV)
+   curl -X POST "http://localhost:8000/book-interview" \
+     -H "Content-Type: application/json" \
+     -d '{"date": "2024-04-15", "time": "14:00"}'
+
+   # Via Chat
+   curl -X POST "http://localhost:8000/chat" \
+     -H "Content-Type: application/json" \
+     -d '{"message": "Book me an interview for him on April 15th at 2 PM"}'
+   ```
+
+3. **Result**: System extracts candidate name and email from uploaded CV and creates complete booking
+
 ## Interview Booking Methods
 
-1. **Conversational**: Natural language booking through chat
-2. **REST API**: Direct programmatic booking
-3. **Document Extraction**: Automatic extraction from uploaded documents
+1. **CV-Enhanced Chat**: "Book me an interview for him" - AI extracts info from uploaded CV
+2. **CV-Enhanced API**: Partial booking data auto-completed with CV information  
+3. **Traditional API**: Complete booking with all required fields
+4. **Document Extraction**: Automatic interview scheduling from document content
+
+## System Architecture
+
+```
+CV Upload → AI Processing → Smart Booking
+    ↓           ↓             ↓
+/upload    Gemini API    Auto-Enhanced
+endpoint   Extraction    Interview DB
+```
+
+## Troubleshooting
+
+- **CV Enhancement Not Working**: Ensure CV document was recently uploaded and contains readable text
+- **API Validation Errors**: Check if server is using latest `PartialInterviewBooking` model
+- **Qdrant Timeout**: System automatically falls back to in-memory vector storage
+- **Redis Connection**: System falls back to in-memory chat storage
 
 Interactive API documentation: `http://localhost:8000/docs`
